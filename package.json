@@ -1,0 +1,18 @@
+{
+  "name": "james-booth-photography",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-stylus": "^2.7.0",
+    "inferno": "^4.0.3",
+    "inferno-component": "^4.0.3",
+    "inferno-scripts": "6.0.0"
+  },
+  "scripts": {
+    "start": "inferno-scripts start",
+    "build": "inferno-scripts build",
+    "test": "inferno-scripts test --env=jsdom",
+    "eject": "inferno-scripts eject"
+  }
+}
