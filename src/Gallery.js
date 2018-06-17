@@ -1,60 +1,31 @@
-import { Component } from 'inferno';
+import { Component } from 'inferno'
+import GalleryItem from './GalleryItem'
 
 class Gallery extends Component {
   render() {
+    let galleryImages = this.props.images.map((image, i) =>
+      <GalleryItem
+        index={i}
+        imageData={image}
+        loggedIn={this.props.loggedIn}
+        setModal={this.props.setModal}
+      />
+    )
+    if (galleryImages.length === 0)
+      galleryImages = (
+        <p className="Error">No images found</p>
+      )
     return (
       <section id="gallery" class="Gallery container">
-        <div className="Gallery__item">
-          <img src="/images/gallery/airplane.jpg" alt="" />
-        </div>
-        <div className="Gallery__item">
-          <img src="/images/gallery/deer.jpg" alt="" />
-        </div>
-        <div className="Gallery__item">
-          <img src="/images/gallery/dress.jpg" alt="" />
-        </div>
-        <div className="Gallery__item">
-          <img src="/images/gallery/landscape.jpg" alt="" />
-        </div>
-        <div className="Gallery__item">
-          <img src="/images/gallery/mountain.jpg" alt="" />
-        </div>
-        <div className="Gallery__item">
-          <img src="/images/gallery/neon.jpg" alt="" />
-        </div>
-        <div className="Gallery__item">
-          <img src="/images/gallery/sunglasses.jpg" alt="" />
-        </div>
-        <div className="Gallery__item">
-          <img src="/images/gallery/windows.jpg" alt="" />
-        </div>
-        <div className="Gallery__item">
-          <img src="/images/gallery/airplane.jpg" alt="" />
-        </div>
-        <div className="Gallery__item">
-          <img src="/images/gallery/deer.jpg" alt="" />
-        </div>
-        <div className="Gallery__item">
-          <img src="/images/gallery/dress.jpg" alt="" />
-        </div>
-        <div className="Gallery__item">
-          <img src="/images/gallery/landscape.jpg" alt="" />
-        </div>
-        <div className="Gallery__item">
-          <img src="/images/gallery/mountain.jpg" alt="" />
-        </div>
-        <div className="Gallery__item">
-          <img src="/images/gallery/neon.jpg" alt="" />
-        </div>
-        <div className="Gallery__item">
-          <img src="/images/gallery/sunglasses.jpg" alt="" />
-        </div>
-        <div className="Gallery__item">
-          <img src="/images/gallery/windows.jpg" alt="" />
-        </div>
+        {this.props.error ?
+          <p className="Error">{this.props.error}</p>
+          : galleryImages.length ?
+            galleryImages
+            : <p className="Error">No images found</p>
+        }
       </section>
-    );
+    )
   }
 }
 
-export default Gallery;
+export default Gallery

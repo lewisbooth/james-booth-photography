@@ -6,7 +6,10 @@ class Footer extends Component {
       <div className="Footer">
         <div className="container">
           <p>Website by <a href='https://amp.studio' target='_blank'>AMP Studio</a></p>
-          <p>Log in</p>
+          {this.props.loggedIn ?
+            <div className="Footer--login" onClick={() => this.props.logOut()}>Log out</div> :
+            <div className="Footer--login" onClick={() => this.props.setModal('login')}>Log in</div>
+          }
         </div>
       </div>
     );
