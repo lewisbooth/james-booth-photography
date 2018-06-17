@@ -14,7 +14,7 @@ class App extends Component {
       window.location.toString().includes('localhost')
     this.publicURL = development ?
       "http://localhost:1250/" :
-      "https://jimbo.photo/"
+      "https://jamesboothphotography.me.uk/"
     this.state = {
       loggedIn: false,
       modals: {
