@@ -11,12 +11,15 @@ class App extends Component {
   constructor() {
     super()
     const development =
-      window.location.toString().includes('localhost')
+      window.location.toString().includes('localhost') ||
+      window.location.toString().includes('192.')
+    console.log(window.location.origin)
     this.publicURL = development ?
-      "http://localhost:1250/" :
+      `http://${window.location.hostname}:1250/` :
       "https://jamesboothphotography.me.uk/"
     this.state = {
       loggedIn: false,
+      modalActive: false,
       modals: {
         login: false,
         addPhoto: false,
@@ -27,15 +30,28 @@ class App extends Component {
       gallery: new Array(20).fill({ meta: "2" })
     }
   }
+  modalIsActive() {
+    let active = false
+    Object.keys(this.state.modals)
+      .forEach(key => {
+        if (this.state.modals[key]) active = true
+      })
+    return active
+  }
   setModal(modal, active = true) {
+    // Rotate lightbox index around end of array
     if (modal === "lightbox")
       if (active === this.state.gallery.length)
         active = 0
       else if (active === -1)
         active = this.state.gallery.length - 1
-    const modals = { ...this.state.modals }
+    const modals = {}
+    // Reset all modals to false
+    Object.keys(this.state.modals)
+      .forEach(key => modals[key] = false)
+    // Enable/disable requested modal
     modals[modal] = active
-    this.setState({ modals })
+    this.setState({ modals, modalActive: active })
   }
   componentDidMount() {
     this.updateGallery()
@@ -63,7 +79,7 @@ class App extends Component {
       .catch(err => {
         console.log(err)
         this.setState({
-          galleryError: "Error loading images"
+          galleryError: this.publicURL + "images"
         })
       })
   }
@@ -76,17 +92,21 @@ class App extends Component {
     })
   }
   render() {
-    let image
+    let currentImage
     if (this.state.modals.lightbox !== false)
-      image = this.state.gallery[this.state.modals.lightbox]
+      currentImage = this.state.gallery[this.state.modals.lightbox]
     if (this.state.modals.editPhoto !== false)
-      image = this.state.gallery[this.state.modals.editPhoto]
+      currentImage = this.state.gallery[this.state.modals.editPhoto]
+    if (this.modalIsActive())
+      document.body.classList.add('Modal__active')
+    else
+      document.body.classList.remove('Modal__active')
     return (
       <div className={`App ${this.state.loggedIn ? "admin" : ""}`}>
         <Modals
           url={this.publicURL}
           modals={this.state.modals}
-          image={image}
+          image={currentImage}
           updateGallery={this.updateGallery.bind(this)}
           setModal={this.setModal.bind(this)} />
         <AdminBar

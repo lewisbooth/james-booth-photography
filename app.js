@@ -19,10 +19,17 @@ const cookieParser = require('cookie-parser')
 // Enable gzip
 app.use(compression())
 
-// Enable CORS for development
+// Configure CORS for development domains
 if (process.env.DEVELOPMENT) {
+  const whitelist = ['http://localhost:3000', 'http://192.168.0.17:3000']
   app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: (origin, callback) => {
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS'))
+      }
+    },
     credentials: true,
     optionsSuccessStatus: 200
   }))

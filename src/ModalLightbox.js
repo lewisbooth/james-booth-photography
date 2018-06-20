@@ -17,12 +17,17 @@ class ModalLightbox extends Component {
       if (image.meta[key] !== "")
         hasMeta = true
     })
-    console.log(image)
     return (
-      <div className="Modal">
+      <div
+        className="Modal"
+        onClick={e => {
+          if (e.target.attributes.class && e.target.attributes.class.value === 'Modal')
+            this.props.setModal("lightbox", false)
+        }
+        }>
         <div
           className="Lightbox__pagination Lightbox__pagination--prev"
-          onClick={() => {
+          onClick={e => {
             this.handleImageLoaded(false)
             this.props.setModal("lightbox", index - 1)
           }}>
