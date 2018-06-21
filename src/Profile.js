@@ -16,10 +16,9 @@ class Profile extends Component {
             <h2>Gear</h2>
             <ul>
               <li>Canon 5D Mark IV</li>
-              <li>Mamiya RB67 Pro Medium Format</li>
+              <li>Sigma 85mm f/1.4 Art</li>
               <li>Canon 70-200mm f/2.8 mkII</li>
               <li>Canon 24-70mm f/2.8 mkII</li>
-              <li>Sigma ART 35mm f/1.4</li>
             </ul>
           </div>
         </section>
