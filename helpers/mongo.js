@@ -12,12 +12,12 @@ const S3 = require("./S3")
 exports.restore = async () => {
   console.log("Restoring files")
   // Create backup folder if it doesn't already exist
-  if (!fs.existsSync("mongodb")) {
+  if (!fs.existsSync("mongodb"))
     fs.mkdirSync("mongodb")
-  }
-  if (!fs.existsSync("mongodb/temp")) {
+
+  if (!fs.existsSync("mongodb/temp"))
     fs.mkdirSync("mongodb/temp")
-  }
+
   // Downloads most recent S3 backup
   const downloadFile = await S3.downloadIndex(
     process.env.S3_BACKUP_BUCKET_NAME,
@@ -27,8 +27,8 @@ exports.restore = async () => {
     process.exit()
   // Extract the tarball into a temp folder
   tar.x({
-    file: downloadFile,
-    cwd: "mongodb/temp"
+    file: path.join(__dirname, "..", downloadFile),
+    cwd: path.join(__dirname, "../mongodb/temp")
   }).then(err => {
     if (err) return console.log("Error extracting tarball \n" + err)
     // Restore /public folder
@@ -41,7 +41,7 @@ exports.restore = async () => {
     mongoRestore({
       drop: true,
       uri: process.env.DATABASE,
-      root: "mongodb/temp/mongodb/backup/p110",
+      root: "mongodb/temp/mongodb/backup/james-booth-photography",
       callback: err => {
         if (err)
           return console.log("Error restoring database \n" + err)
@@ -57,6 +57,8 @@ exports.restore = async () => {
         console.log("Successfully restored database")
       }
     })
+  }).catch(err => {
+    console.log(err)
   })
 
 }
