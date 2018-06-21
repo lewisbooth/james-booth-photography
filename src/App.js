@@ -34,7 +34,7 @@ class App extends Component {
     let active = false
     Object.keys(this.state.modals)
       .forEach(key => {
-        if (this.state.modals[key]) active = true
+        if (this.state.modals[key] !== false) active = true
       })
     return active
   }
@@ -58,7 +58,7 @@ class App extends Component {
     this.checkLogin()
   }
   checkLogin() {
-    fetch(this.publicURL + "checklogin", {
+    fetch(this.publicURL + "checklogin/", {
       credentials: 'include'
     }).then(res => res.json())
       .then(data => {
@@ -68,7 +68,7 @@ class App extends Component {
       })
   }
   updateGallery() {
-    fetch(this.publicURL + "images")
+    fetch(this.publicURL + "images/")
       .then(res => res.json())
       .then(res => {
         this.setState({
