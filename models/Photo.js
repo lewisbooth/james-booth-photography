@@ -44,7 +44,7 @@ photoSchema.statics.getPhotos = function ({
   limit = 0,
   skip = 0,
   filter = {},
-  sort = { _createdAt: -1 }
+  sort = { _createdAt: 1 }
 } = {}) {
   return this
     .find(filter)
