@@ -12,6 +12,7 @@ class ModalAddPhoto extends Component {
   }
   submitForm(e) {
     e.preventDefault()
+    this.setState({ uploadStatus: "uploading" })
     const meta = {
       description: e.target.description.value,
       camera: e.target.camera.value,

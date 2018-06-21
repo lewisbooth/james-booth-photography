@@ -13,7 +13,6 @@ class App extends Component {
     const development =
       window.location.toString().includes('localhost') ||
       window.location.toString().includes('192.')
-    console.log(window.location.origin)
     this.publicURL = development ?
       `http://${window.location.hostname}:1250/` :
       "https://jamesboothphotography.me.uk/"
@@ -79,7 +78,7 @@ class App extends Component {
       .catch(err => {
         console.log(err)
         this.setState({
-          galleryError: this.publicURL + "images"
+          galleryError: "Error fetching images"
         })
       })
   }
