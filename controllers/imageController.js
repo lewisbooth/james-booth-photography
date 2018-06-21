@@ -20,9 +20,11 @@ exports.newPhoto = async (req, res, next) => {
       }
       uploadPhoto(photo, data._id)
         .then(() => {
+          console.log("Successfully uploaded image")
           res.status(200)
           res.send()
         }).catch(err => {
+          console.log(err)
           res.status(400)
           res.send()
         })

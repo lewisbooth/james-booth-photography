@@ -24,6 +24,12 @@ mongoose.connect(process.env.DATABASE, {
   }
 })
 
+// Schedule daily backups at 4am
+// Manual database management is available using helpers/mongo-backup.js and helpers/mongo-restore.js
+cron.schedule("0 4 * * *", () => {
+  mongo.backup()
+})
+
 // Use better promises for Mongo queries
 mongoose.Promise = global.Promise
 
@@ -35,7 +41,7 @@ require("./models/Photo")
 const app = require("./app")
 app.set("port", process.env.PORT || 1250)
 
-// Initiate the server
+// Initiate the server 
 const server = app.listen(app.get("port"), () => {
   console.log(`Express running → PORT ${server.address().port}`)
   if (process.env.DEVELOPMENT)
