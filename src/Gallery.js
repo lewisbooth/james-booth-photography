@@ -40,19 +40,20 @@ class Gallery extends Component {
             : ""}
           {this.props.images.length > 0 ?
             this.props.images.map((image, i) => {
-              if (!image.meta) return
-              let filtered =
+              if (!image.meta)
+                return null
+              const isFiltered =
                 !image.meta.category.includes(this.state.selectedCategory)
-              if (this.state.selectedCategory === "")
-                filtered = false
-              if (!filtered)
-                return <GalleryItem
-                  index={i}
-                  imageData={image}
-                  loggedIn={this.props.loggedIn}
-                  setModal={this.props.setModal}
-                  swapImages={this.props.swapImages}
-                />
+                && this.state.selectedCategory !== ""
+              if (isFiltered)
+                return null
+              return <GalleryItem
+                index={i}
+                imageData={image}
+                loggedIn={this.props.loggedIn}
+                setModal={this.props.setModal}
+                swapImages={this.props.swapImages}
+              />
             }
             )
             : <p className="Error">No images found</p>
