@@ -31,7 +31,7 @@ class GalleryItem extends Component {
     const { loggedIn, index } = this.props
     return (
       <div className="Gallery__item"
-        draggable
+        draggable={loggedIn ? true : false}
         ondragstart={this.handleDragStart.bind(this)}
         ondragover={this.handleDragOver.bind(this)}
         ondrop={this.handleDrop.bind(this)}>

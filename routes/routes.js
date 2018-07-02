@@ -47,6 +47,10 @@ router.get(/admin/,
   authController.isLoggedIn
 )
 
+router.post(/admin/,
+  authController.isLoggedIn
+)
+
 router.post("/admin/new",
   upload.single("file"),
   catchErrors(imageController.newPhoto)
