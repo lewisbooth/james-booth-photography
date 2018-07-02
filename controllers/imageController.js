@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 const Photo = mongoose.model("Photo")
+const Order = mongoose.model("Order")
 const { uploadPhoto, deletePhoto } = require("../helpers/uploadPhoto")
 
 exports.newPhoto = async (req, res, next) => {
@@ -64,5 +65,16 @@ exports.deletePhoto = async (req, res) => {
     }).catch(err => {
       res.status(400)
       res.send()
+    })
+}
+
+exports.swapPosition = async (req, res, next) => {
+  const { start, finish } = req.params
+  Order.repositionPhoto(start, finish)
+    .then(gallery => {
+      res.json({ gallery })
+    })
+    .catch(err => {
+      console.log(err)
     })
 }

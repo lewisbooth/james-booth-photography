@@ -1,4 +1,3 @@
-// Basic photo schema for managing logins
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
@@ -46,7 +45,9 @@ photoSchema.statics.getPhotos = function ({
   limit = 0,
   skip = 0,
   filter = {},
-  sort = { createdAt: -1 }
+  sort = {
+    createdAt: -1
+  }
 } = {}) {
   return this
     .find(filter)

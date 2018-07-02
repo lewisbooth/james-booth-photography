@@ -26,7 +26,7 @@ class App extends Component {
         deletePhoto: false,
         lightbox: false,
       },
-      gallery: new Array(20).fill({ meta: "2" })
+      gallery: new Array(20).fill({})
     }
   }
   modalIsActive() {
@@ -71,7 +71,7 @@ class App extends Component {
       .then(res => res.json())
       .then(res => {
         this.setState({
-          gallery: res.images,
+          gallery: res.gallery,
           galleryError: false
         })
       })
@@ -79,6 +79,25 @@ class App extends Component {
         console.log(err)
         this.setState({
           galleryError: "Error fetching images"
+        })
+      })
+  }
+  swapImages(start, finish) {
+    fetch(`${this.publicURL}admin/swap/${start}/${finish}`, {
+      credentials: 'include',
+      method: "POST"
+    }).then(res => res.json())
+      .then(res => {
+        console.log(res)
+        this.setState({
+          gallery: res.gallery,
+          galleryError: false
+        })
+      })
+      .catch(err => {
+        console.log(err)
+        this.setState({
+          galleryError: "Error swapping images"
         })
       })
   }
@@ -116,6 +135,7 @@ class App extends Component {
           url={this.publicURL}
           loggedIn={this.state.loggedIn}
           setModal={this.setModal.bind(this)}
+          swapImages={this.swapImages.bind(this)}
           images={this.state.gallery}
           error={this.state.galleryError}
         />

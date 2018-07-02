@@ -9,6 +9,7 @@ class Gallery extends Component {
         imageData={image}
         loggedIn={this.props.loggedIn}
         setModal={this.props.setModal}
+        swapImages={this.props.swapImages}
       />
     )
     if (galleryImages.length === 0)
@@ -19,9 +20,10 @@ class Gallery extends Component {
       <section id="gallery" class="Gallery container">
         {this.props.error ?
           <p className="Error">{this.props.error}</p>
-          : galleryImages.length ?
-            galleryImages
-            : <p className="Error">No images found</p>
+          : ""}
+        {galleryImages.length ?
+          galleryImages
+          : <p className="Error">No images found</p>
         }
       </section>
     )

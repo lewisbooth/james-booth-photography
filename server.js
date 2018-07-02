@@ -36,6 +36,10 @@ mongoose.Promise = global.Promise
 // Load the MongoDB models
 require("./models/User")
 require("./models/Photo")
+require("./models/Order")
+
+const { generateOrder } = require("./helpers/generateOrder")
+generateOrder()
 
 // Load server scripts
 const app = require("./app")

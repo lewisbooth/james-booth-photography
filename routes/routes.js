@@ -57,5 +57,8 @@ router.post("/admin/edit/:id",
 router.post("/admin/delete/:id",
   catchErrors(imageController.deletePhoto)
 )
+router.post("/admin/swap/:start/:finish",
+  catchErrors(imageController.swapPosition)
+)
 
 module.exports = router
