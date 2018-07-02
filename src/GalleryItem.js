@@ -11,16 +11,15 @@ class GalleryItem extends Component {
     this.setState({ loaded: true });
   }
   handleDragStart(e) {
-    console.log('wat')
     e.dataTransfer.setData("start", this.props.index)
   }
   handleDragOver(e) {
-    console.log('hmm')
     e.preventDefault()
   }
   handleDrop(e) {
     e.preventDefault()
-    console.log('yes')
+    if (!this.props.loggedIn)
+      return
     const start = e.dataTransfer.getData("start")
     const finish = this.props.index.toString()
     if (start === finish) return
@@ -31,7 +30,7 @@ class GalleryItem extends Component {
     const { loggedIn, index } = this.props
     return (
       <div className="Gallery__item"
-        draggable={loggedIn ? true : false}
+        draggable
         ondragstart={this.handleDragStart.bind(this)}
         ondragover={this.handleDragOver.bind(this)}
         ondrop={this.handleDrop.bind(this)}>
