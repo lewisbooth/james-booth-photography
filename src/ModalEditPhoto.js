@@ -51,7 +51,7 @@ class ModalEditPhoto extends Component {
   }
   updateCategory(category) {
     const categories = this.state.meta.category
-    const isChecked = categories.includes(category)
+    const isChecked = categories.indexOf(category) > -1
     if (isChecked) {
       const index = categories.indexOf(category)
       categories.splice(index, 1)
@@ -92,7 +92,7 @@ class ModalEditPhoto extends Component {
                         name={category}
                         type="checkbox"
                         onClick={() => updateCategory(category)}
-                        checked={this.state.meta.category.includes(category)}
+                        checked={this.state.meta.category.indexOf(category) > -1}
                       />
                       <label htmlFor={category}>{category}</label>
                     </div>

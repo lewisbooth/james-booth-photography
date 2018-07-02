@@ -11,8 +11,12 @@ class App extends Component {
   constructor() {
     super()
     const development =
-      window.location.toString().includes('localhost') ||
-      window.location.toString().includes('192.')
+      window.location.toString().indexOf('localhost') > -1 ||
+      window.location.toString().indexOf('localhost') > -1
+    const gallery = []
+    for (let i = 0; i < 20; i++) {
+      gallery.push({})
+    }
     this.publicURL = development ?
       `http://${window.location.hostname}:1250/` :
       "https://jamesboothphotography.me.uk/"
@@ -27,7 +31,7 @@ class App extends Component {
         lightbox: false,
       },
       categories: ['Portrait', 'Studio', 'Landscape', 'Street', 'Animals', 'Black & White'],
-      gallery: new Array(20).fill({})
+      gallery
     }
   }
   modalIsActive() {

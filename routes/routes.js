@@ -43,11 +43,7 @@ router.post("/login",
   }
 )
 
-router.get(/admin/,
-  authController.isLoggedIn
-)
-
-router.post(/admin/,
+router.all(/admin/,
   authController.isLoggedIn
 )
 
