@@ -4,17 +4,23 @@ class ModalEditPhoto extends Component {
   constructor() {
     super()
     this.state = {
-      meta: {}
+      meta: {},
+      categories: [],
     }
   }
   componentWillMount() {
-    this.setState({ meta: this.props.image.meta })
+    this.setState({
+      meta: this.props.image.meta,
+      categories: this.props.image.meta.category
+    })
   }
   submitForm(e) {
     e.preventDefault()
+    const cleanCategories = this.state.categories
+      .filter(string => string.match(/[a-zA-Z]/g))
     const meta = {
       description: e.target.description.value,
-      category: [],
+      category: cleanCategories,
       camera: e.target.camera.value,
       lens: e.target.lens.value,
       iso: e.target.iso.value,
@@ -22,10 +28,6 @@ class ModalEditPhoto extends Component {
       shutterSpeed: e.target.shutterSpeed.value,
       focalLength: e.target.focalLength.value
     }
-    this.props.categories.forEach(category => {
-      if (e.target[category].checked)
-        meta.category.push(category)
-    })
     fetch(`${this.props.url}admin/edit/${this.props.image._id}`, {
       body: JSON.stringify(meta),
       method: 'POST',
@@ -49,20 +51,30 @@ class ModalEditPhoto extends Component {
     console.log(meta)
     this.setState({ meta })
   }
-  updateCategory(category) {
-    const categories = this.state.meta.category
-    const isChecked = categories.indexOf(category) > -1
-    if (isChecked) {
-      const index = categories.indexOf(category)
-      categories.splice(index, 1)
-    } else {
-      categories.push(category)
-    }
-    this.setState({ meta: { category: categories } })
+  handleCategoryInput(e) {
+    const { categories } = this.state
+    const key = e.target.dataset.key
+    const newValue = e.target.value
+    categories[key] = newValue
+    this.setState({ categories })
+  }
+  addCategory(e) {
+    e.preventDefault()
+    let { categories } = this.state
+    if (categories[categories.length - 1] === "")
+      return
+    categories.push("")
+    this.setState({ categories })
+  }
+  deleteCategory(e) {
+    e.preventDefault()
+    let { categories } = this.state
+    const index = e.target.dataset.key
+    categories.splice(index, 1)
+    this.setState({ categories })
   }
   render() {
     const { image } = this.props
-    const updateCategory = this.updateCategory.bind(this)
     return (
       <div className="Modal">
         <form
@@ -84,20 +96,27 @@ class ModalEditPhoto extends Component {
                   rows="3">
                   {this.state.meta.description}
                 </textarea>
+                <label>Categories</label>
                 <div className="categories">
-                  <label htmlFor="category">Category</label>
-                  {this.props.categories.map(category =>
-                    <div className="checkbox">
+                  {this.state.categories.map((category, i) =>
+                    <div>
                       <input
                         name={category}
-                        type="checkbox"
-                        onClick={() => updateCategory(category)}
-                        checked={this.state.meta.category.indexOf(category) > -1}
+                        data-key={i}
+                        value={category}
+                        onInput={e => this.handleCategoryInput(e)}
                       />
-                      <label htmlFor={category}>{category}</label>
+                      <button
+                        data-key={i}
+                        onClick={e => this.deleteCategory(e)}>
+                        ×
+                        </button>
                     </div>
                   )}
                 </div>
+                <button onClick={e => this.addCategory(e)}>
+                  Add category
+                </button>
                 <label htmlFor="camera">Camera</label>
                 <input
                   name="camera"

@@ -6,7 +6,7 @@ class ModalAddPhoto extends Component {
     this.state = {
       uploadStatus: null,
       imageData: null,
-      categories: ["People", "Landscape", "Street", "Studio", "Animals", "Black & White"],
+      categories: [],
       meta: {}
     }
   }
@@ -15,7 +15,7 @@ class ModalAddPhoto extends Component {
     this.setState({ uploadStatus: "uploading" })
     const meta = {
       description: e.target.description.value,
-      category: [],
+      category: this.state.categories,
       camera: e.target.camera.value,
       lens: e.target.lens.value,
       iso: e.target.iso.value,
@@ -38,7 +38,7 @@ class ModalAddPhoto extends Component {
       setTimeout(() => {
         this.props.updateGallery()
         this.props.setModal('addPhoto', false)
-      }, 500)
+      }, 1000)
     }).catch(() => {
       this.setState({ uploadStatus: "failed" })
     })
@@ -54,6 +54,28 @@ class ModalAddPhoto extends Component {
         imageData: e.target.result
       })
     reader.readAsDataURL(file)
+  }
+  handleCategoryInput(e) {
+    const { categories } = this.state
+    const key = e.target.dataset.key
+    const newValue = e.target.value
+    categories[key] = newValue
+    this.setState({ categories })
+  }
+  addCategory(e) {
+    e.preventDefault()
+    let { categories } = this.state
+    if (categories[categories.length - 1] === "")
+      return
+    categories.push("")
+    this.setState({ categories })
+  }
+  deleteCategory(e) {
+    e.preventDefault()
+    let { categories } = this.state
+    const index = e.target.dataset.key
+    categories.splice(index, 1)
+    this.setState({ categories })
   }
   render() {
     return (
@@ -96,15 +118,27 @@ class ModalAddPhoto extends Component {
                     name="description"
                     rows="3">
                   </textarea>
+                  <label>Categories</label>
                   <div className="categories">
-                    <label htmlFor="category">Category</label>
-                    {this.state.categories.map(category =>
-                      <div className="checkbox">
-                        <input name={category} type="checkbox" />
-                        <label htmlFor={category}>{category}</label>
+                    {this.state.categories.map((category, i) =>
+                      <div>
+                        <input
+                          name={category}
+                          data-key={i}
+                          value={category}
+                          onInput={e => this.handleCategoryInput(e)}
+                        />
+                        <button
+                          data-key={i}
+                          onClick={e => this.deleteCategory(e)}>
+                          ×
+                        </button>
                       </div>
                     )}
                   </div>
+                  <button onClick={e => this.addCategory(e)}>
+                    Add category
+                  </button>
                   <label htmlFor="camera">Camera</label>
                   <input
                     name="camera"

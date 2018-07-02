@@ -30,7 +30,7 @@ class App extends Component {
         deletePhoto: false,
         lightbox: false,
       },
-      categories: ['Portrait', 'Studio', 'Landscape', 'Street', 'Animals', 'Black & White'],
+      categories: [],
       gallery,
       activeFilter: "",
       filteredGallery: []
@@ -88,13 +88,24 @@ class App extends Component {
           this.setState({ loggedIn })
       })
   }
+  generateCategories(gallery) {
+    let categories = []
+    gallery.forEach(image => {
+      image.meta.category.forEach(category => {
+        if (categories.indexOf(category) === -1)
+          categories.push(category)
+      })
+    })
+    return categories
+  }
   updateGallery() {
     fetch(this.publicURL + "images/")
       .then(res => res.json())
       .then(res => {
         this.setState({
           gallery: res.gallery,
-          galleryError: false
+          galleryError: false,
+          categories: this.generateCategories(res.gallery)
         })
         this.updateFilteredGallery()
       })

@@ -33,22 +33,18 @@ exports.newPhoto = async (req, res, next) => {
 }
 
 exports.editPhoto = async (req, res) => {
-  if (!req.body) {
-    res.status(400)
-    return res.send()
-  }
-  const photoSave = await Photo.findOneAndUpdate({ _id: req.params.id },
-    {
-      $set: { meta: req.body }
-    },
+  if (!req.body)
+    return res.status(400).send()
+  const photoSave = await Photo.findOneAndUpdate(
+    { _id: req.params.id },
+    { $set: { meta: req.body } },
     { new: true },
     (err, item) => {
       item.save()
-      if (err || !item) {
+      if (err || !item)
         res.status(400)
-        return res.send()
-      }
-      res.status(200)
+      else
+        res.status(200)
       res.send()
     })
 }
@@ -58,11 +54,9 @@ exports.deletePhoto = async (req, res) => {
   await Order.deletePhoto(req.params.id)
   deletePhoto(req.params.id)
     .then(() => {
-      res.status(200)
-      res.send()
+      res.status(200).send()
     }).catch(err => {
-      res.status(400)
-      res.send()
+      res.status(400).send()
     })
 }
 
@@ -73,6 +67,7 @@ exports.swapPosition = async (req, res, next) => {
       res.json({ gallery })
     })
     .catch(err => {
+      res.status(400).send()
       console.log(err)
     })
 }
