@@ -43,7 +43,7 @@ class Gallery extends Component {
               if (!image.meta)
                 return null
               const isFiltered =
-                image.meta.category.indexOf(this.state.selectedCategory) > -1
+                image.meta.category.indexOf(this.state.selectedCategory) === -1
                 && this.state.selectedCategory !== ""
               if (isFiltered)
                 return null
