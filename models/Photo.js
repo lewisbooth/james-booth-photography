@@ -1,17 +1,15 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-mongoose.Promise = global.Promise;
+const mongoose = require("mongoose")
+const Order = mongoose.model("Order")
+const Schema = mongoose.Schema
+mongoose.Promise = global.Promise
 
 const photoSchema = new Schema({
-  category: [{
-    type: String,
-    enum: ['People', 'Landscape', 'Street', 'Studio', 'Animals', 'B&W']
-  }],
   meta: {
     description: {
       type: String,
       trim: true
     },
+    category: [String],
     camera: {
       type: String,
       trim: true
@@ -39,7 +37,7 @@ const photoSchema = new Schema({
   }
 }, {
     timestamps: true
-  });
+  })
 
 photoSchema.statics.getPhotos = function ({
   limit = 0,
@@ -54,6 +52,11 @@ photoSchema.statics.getPhotos = function ({
     .sort(sort)
     .limit(limit)
     .skip(skip)
-};
+}
 
-module.exports = mongoose.model("Photo", photoSchema);
+photoSchema.pre("save", async function (next) {
+  await Order.newPhoto(this._id)
+  next()
+})
+
+module.exports = mongoose.model("Photo", photoSchema)

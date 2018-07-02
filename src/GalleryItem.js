@@ -11,13 +11,16 @@ class GalleryItem extends Component {
     this.setState({ loaded: true });
   }
   handleDragStart(e) {
+    console.log('wat')
     e.dataTransfer.setData("start", this.props.index)
   }
   handleDragOver(e) {
+    console.log('hmm')
     e.preventDefault()
   }
   handleDrop(e) {
     e.preventDefault()
+    console.log('yes')
     const start = e.dataTransfer.getData("start")
     const finish = this.props.index.toString()
     if (start === finish) return

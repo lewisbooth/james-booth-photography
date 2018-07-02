@@ -6,7 +6,7 @@ class ModalAddPhoto extends Component {
     this.state = {
       uploadStatus: null,
       imageData: null,
-      category: "",
+      categories: ["People", "Landscape", "Street", "Studio", "Animals", "Black & White"],
       meta: {}
     }
   }
@@ -15,6 +15,7 @@ class ModalAddPhoto extends Component {
     this.setState({ uploadStatus: "uploading" })
     const meta = {
       description: e.target.description.value,
+      category: [],
       camera: e.target.camera.value,
       lens: e.target.lens.value,
       iso: e.target.iso.value,
@@ -22,6 +23,10 @@ class ModalAddPhoto extends Component {
       shutterSpeed: e.target.shutterSpeed.value,
       focalLength: e.target.focalLength.value
     }
+    this.state.categories.forEach(category => {
+      if (e.target[category].checked)
+        meta.category.push(category)
+    })
     const data = new FormData()
     data.append('meta', JSON.stringify(meta))
     data.append('file', e.target.file.files[0])
@@ -91,6 +96,15 @@ class ModalAddPhoto extends Component {
                     name="description"
                     rows="3">
                   </textarea>
+                  <div className="categories">
+                    <label htmlFor="category">Category</label>
+                    {this.state.categories.map(category =>
+                      <div className="checkbox">
+                        <input name={category} type="checkbox" />
+                        <label htmlFor={category}>{category}</label>
+                      </div>
+                    )}
+                  </div>
                   <label htmlFor="camera">Camera</label>
                   <input
                     name="camera"

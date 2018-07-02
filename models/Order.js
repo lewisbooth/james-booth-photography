@@ -14,6 +14,24 @@ orderSchema.statics.getPhotos = async function () {
   return order.gallery
 }
 
+orderSchema.statics.newPhoto = async function (id) {
+  const order = await this
+    .findOne()
+  if (order.gallery.indexOf(id) > -1)
+    return
+  order.gallery.unshift(id)
+  const save = await this
+    .findOneAndUpdate({}, { gallery: order.gallery })
+}
+
+orderSchema.statics.deletePhoto = async function (id) {
+  const order = await this
+    .findOne()
+  const index = order.gallery.indexOf(id)
+  const removed = order.gallery.splice(index, 1)
+  await this.findOneAndUpdate({}, { gallery: order.gallery })
+}
+
 orderSchema.statics.repositionPhoto = function (start, finish) {
   const schema = this
   return new Promise(async (resolve, reject) => {
@@ -24,6 +42,7 @@ orderSchema.statics.repositionPhoto = function (start, finish) {
       return reject("No order found")
     move.mut(order.gallery, start, finish)
     order.save()
+    console.log("Swapped photo " + start + " with " + finish)
     setTimeout(async () => {
       const newOrder = await schema.findOne().populate("gallery")
       resolve(newOrder.gallery)

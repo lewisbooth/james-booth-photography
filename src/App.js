@@ -26,6 +26,7 @@ class App extends Component {
         deletePhoto: false,
         lightbox: false,
       },
+      categories: ['Portrait', 'Studio', 'Landscape', 'Street', 'Animals', 'Black & White'],
       gallery: new Array(20).fill({})
     }
   }
@@ -125,6 +126,7 @@ class App extends Component {
           url={this.publicURL}
           modals={this.state.modals}
           image={currentImage}
+          categories={this.state.categories}
           updateGallery={this.updateGallery.bind(this)}
           setModal={this.setModal.bind(this)} />
         <AdminBar
@@ -134,6 +136,7 @@ class App extends Component {
         <Gallery
           url={this.publicURL}
           loggedIn={this.state.loggedIn}
+          categories={this.state.categories}
           setModal={this.setModal.bind(this)}
           swapImages={this.swapImages.bind(this)}
           images={this.state.gallery}

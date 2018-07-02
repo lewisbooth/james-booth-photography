@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const mongo = require("./helpers/mongo")
 const cron = require("node-cron")
 const ip = require("ip")
 
@@ -35,8 +36,8 @@ mongoose.Promise = global.Promise
 
 // Load the MongoDB models
 require("./models/User")
-require("./models/Photo")
 require("./models/Order")
+require("./models/Photo")
 
 const { generateOrder } = require("./helpers/generateOrder")
 generateOrder()

@@ -16,7 +16,7 @@ body
   margin 0
   padding 0
   font-family openSansRegular
-  background-color #15161a
+  background-color black
   color #fff
 
 h1, h2, h3, h4, h5, h6
@@ -71,6 +71,7 @@ button
   background-image url('/images/london-pub-bg.jpg')
   background-repeat no-repeat
   background-size 100%
+  background-color darkBlue
 
 .Error
   display block
@@ -115,7 +116,7 @@ button
   margin-top 30px
 
 .Nav
-  padding 5rem 1rem
+  padding 5rem 1rem 3rem 1rem
   display flex
   justify-content space-between
   align-items center
@@ -136,7 +137,8 @@ button
 
     a:hover
       text-decoration none
-      background-color rgba(255,255,255,0.2)
+      background-color #1A1F33
+      outline 1px solid #535766
 
     li
       margin-left 3rem
@@ -149,6 +151,31 @@ button
   display flex
   flex-wrap wrap
   align-items flex-start
+
+  &__categories
+    display flex
+    flex-wrap wrap
+    width 100%
+    align-items center
+    justify-content center
+    margin-bottom 3rem
+
+    button
+      background none 
+      border none
+      text-transform uppercase
+      font-family openSansRegular
+      letter-spacing 0.2em
+      padding .5rem 1rem
+      margin 0 .5rem .5rem .5rem
+
+      &.selected
+        background #1A1F33 !important
+        outline 1px solid #535766 !imporant
+
+      &:hover
+        background #535766
+        outline 1px solid #535766
 
   &__item
     width calc(25% - .5rem)

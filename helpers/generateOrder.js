@@ -13,12 +13,6 @@ exports.generateOrder = async (replace = false) => {
   photos.forEach(photo => {
     gallery.push(photo._id)
   })
-  const newOrder = await Order.findOneAndUpdate(
-    {},
-    { gallery },
-    {
-      upsert: true
-    }, () => {
-      console.log("Generated new gallery order")
-    })
+  const newOrder = new Order({ gallery }).save()
+  console.log("Generated new gallery order")
 }

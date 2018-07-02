@@ -14,6 +14,7 @@ class ModalEditPhoto extends Component {
     e.preventDefault()
     const meta = {
       description: e.target.description.value,
+      category: [],
       camera: e.target.camera.value,
       lens: e.target.lens.value,
       iso: e.target.iso.value,
@@ -21,6 +22,10 @@ class ModalEditPhoto extends Component {
       shutterSpeed: e.target.shutterSpeed.value,
       focalLength: e.target.focalLength.value
     }
+    this.props.categories.forEach(category => {
+      if (e.target[category].checked)
+        meta.category.push(category)
+    })
     fetch(`${this.props.url}admin/edit/${this.props.image._id}`, {
       body: JSON.stringify(meta),
       method: 'POST',
@@ -33,7 +38,7 @@ class ModalEditPhoto extends Component {
       setTimeout(() => {
         this.props.updateGallery()
         this.props.setModal('editPhoto', false)
-      }, 1000)
+      }, 500)
     }).catch(() => {
       this.setState({ editStatus: "failed" })
     })
@@ -44,8 +49,20 @@ class ModalEditPhoto extends Component {
     console.log(meta)
     this.setState({ meta })
   }
+  updateCategory(category) {
+    const categories = this.state.meta.category
+    const isChecked = categories.includes(category)
+    if (isChecked) {
+      const index = categories.indexOf(category)
+      categories.splice(index, 1)
+    } else {
+      categories.push(category)
+    }
+    this.setState({ meta: { category: categories } })
+  }
   render() {
     const { image } = this.props
+    const updateCategory = this.updateCategory.bind(this)
     return (
       <div className="Modal">
         <form
@@ -67,6 +84,20 @@ class ModalEditPhoto extends Component {
                   rows="3">
                   {this.state.meta.description}
                 </textarea>
+                <div className="categories">
+                  <label htmlFor="category">Category</label>
+                  {this.props.categories.map(category =>
+                    <div className="checkbox">
+                      <input
+                        name={category}
+                        type="checkbox"
+                        onClick={() => updateCategory(category)}
+                        checked={this.state.meta.category.includes(category)}
+                      />
+                      <label htmlFor={category}>{category}</label>
+                    </div>
+                  )}
+                </div>
                 <label htmlFor="camera">Camera</label>
                 <input
                   name="camera"

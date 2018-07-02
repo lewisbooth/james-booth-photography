@@ -21,11 +21,13 @@ class Modals extends Component {
             url={url} /> : ""}
         {modals.addPhoto ?
           <ModalAddPhoto
+            categories={this.props.categories}
             setModal={setModal}
             updateGallery={updateGallery}
             url={url} /> : ""}
         {modals.editPhoto !== false ?
           <ModalEditPhoto
+            categories={this.props.categories}
             setModal={setModal}
             updateGallery={updateGallery}
             image={image}

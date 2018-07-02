@@ -14,6 +14,7 @@ class ModalLightbox extends Component {
     const { image, index } = this.props
     let hasMeta = false
     Object.keys(image.meta).forEach(key => {
+      if (key === "category") return
       if (image.meta[key] !== "")
         hasMeta = true
     })

@@ -33,7 +33,6 @@ exports.newPhoto = async (req, res, next) => {
 }
 
 exports.editPhoto = async (req, res) => {
-  console.log(req.body)
   if (!req.body) {
     res.status(400)
     return res.send()
@@ -55,9 +54,8 @@ exports.editPhoto = async (req, res) => {
 }
 
 exports.deletePhoto = async (req, res) => {
-  const deleted = await Photo.findOneAndRemove(
-    { _id: req.params.id }
-  )
+  await Photo.findOneAndRemove({ _id: req.params.id })
+  await Order.deletePhoto(req.params.id)
   deletePhoto(req.params.id)
     .then(() => {
       res.status(200)
