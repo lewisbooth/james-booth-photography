@@ -38,7 +38,7 @@ class ModalAddPhoto extends Component {
       setTimeout(() => {
         this.props.updateGallery()
         this.props.setModal('addPhoto', false)
-      }, 1000)
+      }, 500)
     }).catch(() => {
       this.setState({ uploadStatus: "failed" })
     })
