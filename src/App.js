@@ -45,6 +45,8 @@ class App extends Component {
     return active
   }
   setActiveFilter(activeFilter) {
+    if (activeFilter === this.state.activeFilter)
+      activeFilter = ""
     this.setState({ activeFilter })
     this.updateFilteredGallery()
   }
