@@ -31,7 +31,9 @@ class App extends Component {
         lightbox: false,
       },
       categories: ['Portrait', 'Studio', 'Landscape', 'Street', 'Animals', 'Black & White'],
-      gallery
+      gallery,
+      activeFilter: "",
+      filteredGallery: []
     }
   }
   modalIsActive() {
@@ -42,13 +44,26 @@ class App extends Component {
       })
     return active
   }
+  setActiveFilter(activeFilter) {
+    this.setState({ activeFilter })
+    this.updateFilteredGallery()
+  }
+  updateFilteredGallery() {
+    const filteredGallery = this.state.gallery.filter(image => {
+      return (image.meta.category.indexOf(this.state.activeFilter) > -1
+        || this.state.activeFilter === "")
+    })
+    if (filteredGallery === this.state.filteredGallery)
+      return
+    this.setState({ filteredGallery })
+  }
   setModal(modal, active = true) {
     // Rotate lightbox index around end of array
     if (modal === "lightbox")
-      if (active === this.state.gallery.length)
+      if (active === this.state.filteredGallery.length)
         active = 0
       else if (active === -1)
-        active = this.state.gallery.length - 1
+        active = this.state.filteredGallery.length - 1
     const modals = {}
     // Reset all modals to false
     Object.keys(this.state.modals)
@@ -79,6 +94,7 @@ class App extends Component {
           gallery: res.gallery,
           galleryError: false
         })
+        this.updateFilteredGallery()
       })
       .catch(err => {
         console.log(err)
@@ -88,6 +104,16 @@ class App extends Component {
       })
   }
   swapImages(start, finish) {
+    if (this.state.activeFilter !== "") {
+      const startId = this.state.filteredGallery[start]._id
+      const finishId = this.state.filteredGallery[finish]._id
+      this.state.gallery.forEach((image, i) => {
+        if (image._id === startId)
+          start = i
+        if (image._id === finishId)
+          finish = i
+      })
+    }
     fetch(`${this.publicURL}admin/swap/${start}/${finish}`, {
       credentials: 'include',
       method: "POST"
@@ -98,6 +124,7 @@ class App extends Component {
           gallery: res.gallery,
           galleryError: false
         })
+        this.updateFilteredGallery()
       })
       .catch(err => {
         console.log(err)
@@ -117,9 +144,9 @@ class App extends Component {
   render() {
     let currentImage
     if (this.state.modals.lightbox !== false)
-      currentImage = this.state.gallery[this.state.modals.lightbox]
+      currentImage = this.state.filteredGallery[this.state.modals.lightbox]
     if (this.state.modals.editPhoto !== false)
-      currentImage = this.state.gallery[this.state.modals.editPhoto]
+      currentImage = this.state.filteredGallery[this.state.modals.editPhoto]
     if (this.modalIsActive())
       document.body.classList.add('Modal__active')
     else
@@ -141,9 +168,11 @@ class App extends Component {
           url={this.publicURL}
           loggedIn={this.state.loggedIn}
           categories={this.state.categories}
+          activeFilter={this.state.activeFilter}
           setModal={this.setModal.bind(this)}
           swapImages={this.swapImages.bind(this)}
-          images={this.state.gallery}
+          setActiveFilter={this.setActiveFilter.bind(this)}
+          images={this.state.filteredGallery}
           error={this.state.galleryError}
         />
         <Profile />
